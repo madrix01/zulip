@@ -21,12 +21,15 @@ import * as overlays from "./overlays";
 import * as people from "./people";
 import * as stream_data from "./stream_data";
 import * as timerender from "./timerender";
+import * as ui_util from "./ui_util";
 import * as util from "./util";
 
 function set_count(count) {
     const draft_count = count.toString();
     const text = $t({defaultMessage: "Drafts ({draft_count})"}, {draft_count});
     $(".compose_drafts_button").text(text);
+    const drafts_li = $(".top_left_drafts");
+    ui_util.update_unread_count_in_dom(drafts_li, count);
 }
 
 export const draft_model = (function () {
