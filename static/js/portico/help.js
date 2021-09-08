@@ -1,14 +1,36 @@
 import $ from "jquery";
 import SimpleBar from "simplebar";
-
+import ClipboardJS from "clipboard";
 import * as common from "../common";
+import copy_code_button from "../../templates/copy_code_button.hbs";
 
 import * as google_analytics from "./google-analytics";
 import {activate_correct_tab} from "./tabbed-instructions";
 
+
+function addCopyDownloadButton($content){
+    $content.find(".codehilite").each(function () {
+        const $codeHilite = $(this);
+        const $pre = $codeHilite.find("pre");
+        const copy_button = $(copy_code_button());
+        // const copy_button = $("<button style='float:right;'>Copy</button>")
+        const download_button = $("<button class='download_btn' style='float:right;'>Download</button>")
+        $pre.prepend(copy_button);
+        $pre.prepend(download_button);
+        new ClipboardJS(copy_button[0], {
+            text(copy_element){
+                return $(copy_element).siblings("code").text();
+            }
+        })
+        $("download_btn").on("click" )
+    })
+}
 function registerCodeSection($codeSection) {
     const $li = $codeSection.find("ul.nav li");
     const $blocks = $codeSection.find(".blocks div");
+    addCopyDownloadButton($codeSection);
+
+    
 
     $li.on("click", function () {
         const language = this.dataset.language;
